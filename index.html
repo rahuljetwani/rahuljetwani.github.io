@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -259,8 +259,13 @@
     headerLinks.forEach(a=>{
       a.addEventListener('click', (e)=>{
         e.preventDefault();
-        showPage(a.dataset.target);
-      });
+        const target = a.dataset.target;
+        showPage(target);
+
+        if (target === "projects") {
+      scrollToProject(currentIndex, true);
+    }
+    });
     });
 
     /* ---------- Projects scrolling setup ---------- */
@@ -385,6 +390,14 @@
     document.addEventListener('keydown', (e)=>{
       if (e.key === 'Escape') showPage('intro');
     });
+
+    window.addEventListener("load", () => {
+      if (location.hash === "#projects") {
+        showPage("projects");
+        scrollToProject(0, true);
+      }
+    });
+
   </script>
 </body>
 </html>
