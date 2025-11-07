@@ -1,0 +1,266 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nightmares of the Creepy Cube | Rahul Jetwani</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#111418;
+      --surface:#1D1F23;
+      --text-primary:#E6E6E6;
+      --text-secondary:#A9A9B3;
+      --accent1:#F9A826;
+      --accent2:#679186;
+      --border:#2A2E35;
+      --font-header: "Space Grotesk", sans-serif;
+      --font-body: "Inter", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;width:100%;background:var(--bg);color:var(--text-primary);font-family:var(--font-body)}
+
+    /* Header */
+    header{
+      position:fixed;top:0;left:0;width:100%;
+      background:rgba(29,31,35,0.85);backdrop-filter:blur(10px);
+      display:flex;justify-content:space-around;align-items:center;
+      padding:18px 0;z-index:1000;border-bottom:1px solid var(--border);
+    }
+    header a{
+      color:var(--text-primary);text-decoration:none;font-family:var(--font-header);
+      font-weight:600;font-size:17px;letter-spacing:0.2px;transition:color .18s;
+    }
+    header a:hover{color:var(--accent1)}
+
+    /* Detail Container */
+    .detail-container{
+      padding-top:80px;
+      min-height:100vh;
+      padding-bottom:2rem;
+    }
+
+    .detail-grid{
+      max-width:1600px;margin:0 auto;padding:2rem;
+      display:grid;grid-template-columns:40% 60%;grid-template-rows:auto auto auto;gap:1.5rem;
+      min-height:calc(100vh - 80px);
+    }
+    
+    .detail-box{
+      background:var(--surface);border-radius:12px;padding:1.5rem;
+      border:1px solid var(--border);
+    }
+    
+    /* LEFT TOP: Slideshow */
+    .detail-slideshow{
+      grid-column:1;grid-row:1;
+      position:relative;overflow:hidden;padding:0;
+      display:flex;align-items:center;justify-content:center;
+      min-height:350px;
+    }
+    .detail-slideshow img{
+      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+      opacity:0;transition:opacity .6s ease;
+    }
+    .detail-slideshow img.active{opacity:1}
+    
+    /* LEFT MIDDLE: Tools */
+    .detail-tools{
+      grid-column:1;grid-row:2;
+    }
+    .detail-tools h3{
+      font-size:1.2rem;color:var(--accent2);font-family:var(--font-header);
+      margin-bottom:.8rem;
+    }
+    .tool-tags{
+      display:flex;flex-wrap:wrap;gap:.6rem;
+    }
+    .tool-tag{
+      padding:.5rem 1rem;background:rgba(249,168,38,0.15);
+      color:var(--accent1);border-radius:6px;font-size:.9rem;
+      font-family:var(--font-mono);border:1px solid rgba(249,168,38,0.3);
+    }
+    
+    /* LEFT BOTTOM: Description */
+    .detail-description{
+      grid-column:1;grid-row:3;
+    }
+    .detail-description h2{
+      font-size:1.8rem;color:var(--accent1);font-family:var(--font-header);
+      margin-bottom:1rem;
+    }
+    .detail-description p{
+      color:var(--text-secondary);line-height:1.6;margin-bottom:1rem;
+    }
+    .btn{
+      padding:.85rem 1.6rem;border-radius:8px;text-decoration:none;
+      font-weight:600;font-family:var(--font-header);display:inline-block;
+      margin-top:.5rem;transition:all .25s;
+    }
+    .btn-primary{background:var(--accent1);color:#111418}
+    .btn-primary:hover{background:var(--accent2);color:#fff}
+    
+    /* RIGHT: Process */
+    .detail-process{
+      grid-column:2;grid-row:1 / 4;
+      padding:2rem;overflow-y:auto;max-height:calc(100vh - 120px);
+    }
+    .detail-process h3{
+      font-size:1.5rem;color:var(--accent1);font-family:var(--font-header);
+      margin-bottom:1.5rem;padding-bottom:.5rem;
+      border-bottom:2px solid var(--border);
+    }
+    .process-section{
+      margin-bottom:2rem;
+    }
+    .process-section h4{
+      font-size:1.2rem;color:var(--accent2);font-family:var(--font-header);
+      margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem;
+    }
+    .process-section h4:before{
+      content:"▸";color:var(--accent1);font-size:1.4rem;
+    }
+    .process-section p{
+      color:var(--text-secondary);line-height:1.6;margin-bottom:.8rem;
+    }
+    .process-section ul{
+      list-style:none;padding-left:1rem;margin-bottom:.8rem;
+    }
+    .process-section li{
+      color:var(--text-secondary);padding:.3rem 0;
+      padding-left:1.2rem;position:relative;line-height:1.5;
+    }
+    .process-section li:before{
+      content:"•";color:var(--accent1);position:absolute;left:0;
+      font-size:1.2rem;
+    }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .detail-grid{
+        grid-template-columns:1fr;grid-template-rows:auto;
+      }
+      .detail-slideshow,.detail-tools,.detail-description,.detail-process{
+        grid-column:1 !important;grid-row:auto !important;
+      }
+      .detail-slideshow{min-height:250px}
+      .detail-process{max-height:none}
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <a href="index.html#intro">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+  </header>
+
+  <div class="detail-container">
+    <div class="detail-grid">
+      <!-- LEFT TOP: Slideshow -->
+      <div class="detail-box detail-slideshow">
+        <img src="assets/eod01.jpg" alt="NFTCC 1" class="active">
+        <img src="assets/eod02.PNG" alt="NFTCC 2">
+        <img src="assets/eod03.PNG" alt="NFTCC 3">
+      </div>
+      
+      <!-- LEFT MIDDLE: Tools -->
+      <div class="detail-box detail-tools">
+        <h3>Tools Used</h3>
+        <div class="tool-tags">
+          <span class="tool-tag">Unity Engine</span>
+          <span class="tool-tag">C#</span>
+          <span class="tool-tag">Blender</span>
+          <span class="tool-tag">Photoshop</span>
+          <span class="tool-tag">Audacity</span>
+        </div>
+      </div>
+      
+      <!-- LEFT BOTTOM: Description -->
+      <div class="detail-box detail-description">
+        <h2>EYES ON DUTY</h2>
+        <p>
+        Eyes on Duty is a mobile horror observation game made in Unity, inspired by the I’m on Observation Duty series.
+        Players monitor security cameras in a haunted restaurant, spotting and reporting paranormal anomalies before they spiral out of control.
+        I built the core systems — anomaly detection, camera switching, UI flow, and game management — all optimized for mobile performance.
+        The game blends tense atmosphere, smooth controls, and immersive audio, showcasing my ability to design complete gameplay systems with strong UI/UX and platform polish.
+        </p>
+        <a class="btn btn-primary" href="#" target="_blank">Download Game</a>
+      </div>
+      
+      <!-- RIGHT: Process -->
+      <div class="detail-box detail-process">
+        <h3>Development Journey</h3>
+        
+        <div class="process-section">
+          <h4>The Idea</h4>
+          <p>
+            Eyes on Duty was my first full mobile project — a real test of turning a simple concept into a complete, polished experience.
+            Inspired by I’m on Observation Duty, I wanted to create a tense observation-style horror game where players monitor several camera feeds 
+            inside a restaurant and report strange anomalies before they get out of control.
+          </p>
+        </div>
+        
+        <div class="process-section">
+          <h4>How I Planned It</h4>
+          <p>
+            The initial plan was straightforward: replicate the core gameplay loop — camera switching, spotting anomalies, and reporting them.
+            But during development, I started focusing on the systems beneath the surface.
+            I wanted the anomalies to feel unpredictable, so I built a structure that could support random spawns, different anomaly types, and a gradual difficulty curve.
+            The goal became less about copying a game and more about understanding how to build a modular and replayable system around the same idea.
+          </p>
+        </div>
+        
+        <div class="process-section">
+          <h4>How I Build It</h4>
+          <p>
+            I developed the anomaly management system entirely in C#, centered around the <strong>AnomalyManager</strong> which controls what happens, where, and when. 
+            Each camera feed has its own anomaly configuration, and the manager ensures only available cameras can receive new anomalies.
+            The <strong>AnomalyReportingSystem</strong> ties directly into that logic — letting the player select a camera, choose a report type, and receive real-time feedback.
+          </p>
+          <ul>
+            <li><strong>Procedural anomaly timing</strong> ensures unpredictability.</li>
+            <li><strong>Smooth UI transitions</strong> make camera switching feel natural and cinematic.</li>
+            <li><strong>A modular structure </strong>allows new cameras and anomaly types to be added without rewriting existing code.</li>
+            <li><strong>Optimized for mobile</strong>, with touch controls, audio balancing, and low memory usage across different screen sizes.</li>
+          </ul>
+          <p>
+          I also implemented a simple penalty system (three wrong reports = game over) and ambient sound design to build immersion without relying on heavy visuals.
+          </p>
+        </div>
+        
+        <div class="process-section">
+          <h4>What Needs Work</h4>
+          <p>
+            The current version works well as a proof of concept, but it still has room to grow.
+            I want to expand the number of anomalies, refine the pacing to feel more “alive,” and introduce subtler visual cues to reward sharp-eyed players.
+            With more content and polish, Eyes on Duty could become a fully realized mobile horror title and not just a prototype.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Slideshow functionality
+    const slideshow = document.querySelector('.detail-slideshow');
+    const images = Array.from(slideshow.querySelectorAll('img'));
+    let currentIndex = 0;
+
+    function rotateImages(){
+      images[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % images.length;
+      images[currentIndex].classList.add('active');
+    }
+
+    // Auto-rotate every 4 seconds
+    setInterval(rotateImages, 4000);
+  </script>
+</body>
+</html>

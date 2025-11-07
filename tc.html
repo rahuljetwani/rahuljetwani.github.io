@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Taxi Chaos | Rahul Jetwani</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #111418;
+      --surface: #1D1F23;
+      --text-primary: #E6E6E6;
+      --text-secondary: #A9A9B3;
+      --accent1: #F9A826;
+      --accent2: #679186;
+      --border: #2A2E35;
+      --font-header: "Space Grotesk", sans-serif;
+      --font-body: "Inter", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      width: 100%;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      background: rgba(29,31,35,0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 18px 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--border);
+    }
+    header a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-family: var(--font-header);
+      font-weight: 600;
+      font-size: 17px;
+      transition: color .18s;
+    }
+    header a:hover { color: var(--accent1); }
+
+    .detail-container {
+      padding-top: 90px;
+      min-height: 100vh;
+      padding-bottom: 2rem;
+    }
+
+    .detail-grid {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 40% 60%;
+      gap: 1.5rem;
+      min-height: calc(100vh - 80px);
+    }
+
+    .detail-box {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .detail-slideshow {
+      grid-column: 1;
+      grid-row: 1;
+      position: relative;
+      overflow: hidden;
+      min-height: 350px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+    }
+    .detail-slideshow img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      border-radius: 12px;
+    }
+    .detail-slideshow img.active { opacity: 1; }
+
+    .detail-tools h3 {
+      font-size: 1.2rem;
+      color: var(--accent2);
+      font-family: var(--font-header);
+      margin-bottom: .8rem;
+    }
+    .tool-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+    .tool-tag {
+      padding: .5rem 1rem;
+      background: rgba(249,168,38,0.15);
+      color: var(--accent1);
+      border-radius: 6px;
+      font-size: .9rem;
+      font-family: var(--font-mono);
+      border: 1px solid rgba(249,168,38,0.3);
+    }
+
+    .detail-description h2 {
+      font-size: 1.8rem;
+      color: var(--accent1);
+      font-family: var(--font-header);
+      margin-bottom: 1rem;
+    }
+    .detail-description p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .btn {
+      padding: .85rem 1.6rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: var(--font-header);
+      display: inline-block;
+      margin-top: .5rem;
+      transition: all .25s;
+    }
+    .btn-primary { background: var(--accent1); color: #111418; }
+    .btn-primary:hover { background: var(--accent2); color: #fff; }
+
+    .detail-process {
+      grid-column: 2;
+      grid-row: 1 / 4;
+      padding: 2rem;
+      overflow-y: auto;
+      max-height: calc(100vh - 120px);
+    }
+    .detail-process h3 {
+      font-size: 1.5rem;
+      color: var(--accent1);
+      font-family: var(--font-header);
+      margin-bottom: 1.5rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .process-section {
+      margin-bottom: 2rem;
+    }
+    .process-section h4 {
+      font-size: 1.2rem;
+      color: var(--accent2);
+      font-family: var(--font-header);
+      margin-bottom: .8rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .process-section h4:before {
+      content: "▸";
+      color: var(--accent1);
+      font-size: 1.4rem;
+    }
+    .process-section p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+    .process-section ul {
+      list-style: none;
+      padding-left: 1rem;
+      margin-bottom: .8rem;
+    }
+    .process-section li {
+      color: var(--text-secondary);
+      padding: .3rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+      line-height: 1.5;
+    }
+    .process-section li:before {
+      content: "•";
+      color: var(--accent1);
+      position: absolute;
+      left: 0;
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 900px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+      .detail-slideshow, .detail-tools, .detail-description, .detail-process {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+      }
+      .detail-slideshow { min-height: 250px; }
+      .detail-process { max-height: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="index.html#intro">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="about.html">About</a>
+  </header>
+
+  <div class="detail-container">
+    <div class="detail-grid">
+
+      <div class="detail-box detail-slideshow">
+        <img src="assets/tc01.jpg" alt="Taxi Chaos 1" class="active">
+        <img src="assets/tc02.PNG" alt="Taxi Chaos 2">
+        <img src="assets/tc03.PNG" alt="Taxi Chaos 3">
+      </div>
+
+      <div class="detail-box detail-tools">
+        <h3>Tools Used</h3>
+        <div class="tool-tags">
+          <span class="tool-tag">Unity Engine</span>
+          <span class="tool-tag">C#</span>
+          <span class="tool-tag">Blender</span>
+          <span class="tool-tag">Photoshop</span>
+          <span class="tool-tag">Audacity</span>
+        </div>
+      </div>
+
+      <div class="detail-box detail-description">
+        <h2>Taxi Chaos</h2>
+        <p>
+          <strong>Taxi Chaos</strong> is a 3D driving game inspired by classic arcade racers — a blend of chaos, precision, and time pressure.
+          The goal was to simulate a living city where the player balances speed with control, picking up NPC passengers and dropping them
+          at destinations before the timer runs out. What started as a college project became a full experiment in modular systems,
+          AI traffic behavior, and performance optimization in Unity.
+        </p>
+        <a class="btn btn-primary" href="#" target="_blank">Download Game</a>
+      </div>
+
+      <div class="detail-box detail-process">
+        <h3>Development Journey</h3>
+
+        <div class="process-section">
+          <h4>The Idea</h4>
+          <p>
+            I’ve always loved how arcade driving games capture pure adrenaline with minimal mechanics — just you, the car, and a ticking clock.
+            The concept for <strong>Taxi Chaos</strong> started as a fun twist: combine <em>Crazy Taxi</em>’s urgency with simulation-like systems.
+            The plan was to create an explorable low-poly city where AI cars, pedestrians, and mission systems all co-exist — something both
+            playful and technical.
+          </p>
+        </div>
+
+        <div class="process-section">
+          <h4>How I Planned It</h4>
+          <p>
+            The core pillars I defined early were:
+          </p>
+          <ul>
+            <li><strong>Dynamic Vehicle Physics</strong> — cars that feel responsive and believable but still arcade-like.</li>
+            <li><strong>AI Traffic & Pathing</strong> — self-driven vehicles navigating different routes through the city grid.</li>
+            <li><strong>Passenger Missions</strong> — a loop where pickup, delivery, and scoring systems link seamlessly.</li>
+            <li><strong>Reward Loop</strong> — money earned from speed and safety, reinforcing skill-based play.</li>
+          </ul>
+          <p>
+            I structured my Trello board around these pillars, breaking them into small, testable modules.
+            That approach kept development organized and let me test features independently before integration.
+          </p>
+        </div>
+
+        <div class="process-section">
+          <h4>How I Completed It</h4>
+          <p>
+            The first major system was <strong>car control</strong>. I rebuilt it from scratch using a modular script structure:
+            <code>GetInput()</code> for steering, <code>HandleMotor()</code> for torque, <code>HandleSteering()</code> for angle adjustment,
+            and <code>ApplyAntiRoll()</code> for suspension stability. After countless test drives and physics tuning, the car felt right —
+            quick, weighty, and responsive at higher speeds.
+          </p>
+          <p>
+            The <strong>AI traffic system</strong> came next. Instead of using NavMesh agents (which proved heavy for large maps),
+            I built a lightweight waypoint-based controller. Each car follows its path independently, obeys stop signals, and reacts to
+            nearby vehicles. The system’s simplicity allowed hundreds of AI cars to run smoothly even on mid-tier hardware.
+          </p>
+          <p>
+            For the <strong>passenger system</strong>, I created a modular mission manager — randomizing pickup spots,
+            generating nearby destinations, and attaching dialogue snippets for personality. Passengers trigger events like timers,
+            cash rewards, and sound effects, creating a satisfying gameplay rhythm.
+          </p>
+          <p>
+            By the end of development, I had an entire gameplay loop functional: <strong>drive → pick up → deliver → earn → repeat</strong>.
+            Seeing the systems interact in real time — traffic reacting to collisions, passengers commenting, and UI updating dynamically —
+            was one of the most rewarding parts of building <em>Taxi Chaos</em>.
+          </p>
+        </div>
+
+        <div class="process-section">
+          <h4>What Needs Work</h4>
+          <p>
+            While the core systems work, there’s still plenty of room to grow. The current car physics are fun but lack subtle handling
+            at higher speeds. The AI sometimes collides during intersections, and mission variety is limited to basic pickup-and-drop loops.
+          </p>
+          <ul>
+            <li>Implement lane-switching and overtaking for AI traffic.</li>
+            <li>Refine drift and steering curves for smoother control.</li>
+            <li>Add random passenger events — e.g., impatient customers or bonus fares.</li>
+            <li>Improve visual feedback with speed blur and tire smoke effects.</li>
+          </ul>
+        </div>
+
+        <div class="process-section">
+          <h4>Future Updates</h4>
+          <p>
+            The long-term goal for <strong>Taxi Chaos</strong> is to evolve it into a full arcade driving experience.
+            Planned updates include:
+          </p>
+          <ul>
+            <li>Adding a <strong>mini-map system</strong> with GPS-style routing.</li>
+            <li>Introducing <strong>day-night cycles</strong> and <strong>dynamic weather</strong>.</li>
+            <li>Expanding cities and mission types for better replay value.</li>
+            <li>Integrating <strong>mobile touch controls</strong> and releasing it on Android as a casual driving game.</li>
+          </ul>
+          <p>
+            Every iteration brings it closer to the original vision — a fast, reactive, living city where chaos meets control.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const slideshow = document.querySelector('.detail-slideshow');
+    const images = Array.from(slideshow.querySelectorAll('img'));
+    let currentIndex = 0;
+    function rotateImages() {
+      images[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % images.length;
+      images[currentIndex].classList.add('active');
+    }
+    setInterval(rotateImages, 4000);
+  </script>
+</body>
+</html>

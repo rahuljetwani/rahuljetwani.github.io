@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nightmares of the Creepy Cube | Rahul Jetwani</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#111418;
+      --surface:#1D1F23;
+      --text-primary:#E6E6E6;
+      --text-secondary:#A9A9B3;
+      --accent1:#F9A826;
+      --accent2:#679186;
+      --border:#2A2E35;
+      --font-header: "Space Grotesk", sans-serif;
+      --font-body: "Inter", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;width:100%;background:var(--bg);color:var(--text-primary);font-family:var(--font-body)}
+
+    /* Header */
+    header{
+      position:fixed;top:0;left:0;width:100%;
+      background:rgba(29,31,35,0.85);backdrop-filter:blur(10px);
+      display:flex;justify-content:space-around;align-items:center;
+      padding:18px 0;z-index:1000;border-bottom:1px solid var(--border);
+    }
+    header a{
+      color:var(--text-primary);text-decoration:none;font-family:var(--font-header);
+      font-weight:600;font-size:17px;letter-spacing:0.2px;transition:color .18s;
+    }
+    header a:hover{color:var(--accent1)}
+
+    /* Detail Container */
+    .detail-container{
+      padding-top:80px;
+      min-height:100vh;
+      padding-bottom:2rem;
+    }
+
+    .detail-grid{
+      max-width:1600px;margin:0 auto;padding:2rem;
+      display:grid;grid-template-columns:40% 60%;grid-template-rows:auto auto auto;gap:1.5rem;
+      min-height:calc(100vh - 80px);
+    }
+    
+    .detail-box{
+      background:var(--surface);border-radius:12px;padding:1.5rem;
+      border:1px solid var(--border);
+    }
+    
+    /* LEFT TOP: Slideshow */
+    .detail-slideshow{
+      grid-column:1;grid-row:1;
+      position:relative;overflow:hidden;padding:0;
+      display:flex;align-items:center;justify-content:center;
+      min-height:350px;
+    }
+    .detail-slideshow img{
+      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+      opacity:0;transition:opacity .6s ease;
+    }
+    .detail-slideshow img.active{opacity:1}
+    
+    /* LEFT MIDDLE: Tools */
+    .detail-tools{
+      grid-column:1;grid-row:2;
+    }
+    .detail-tools h3{
+      font-size:1.2rem;color:var(--accent2);font-family:var(--font-header);
+      margin-bottom:.8rem;
+    }
+    .tool-tags{
+      display:flex;flex-wrap:wrap;gap:.6rem;
+    }
+    .tool-tag{
+      padding:.5rem 1rem;background:rgba(249,168,38,0.15);
+      color:var(--accent1);border-radius:6px;font-size:.9rem;
+      font-family:var(--font-mono);border:1px solid rgba(249,168,38,0.3);
+    }
+    
+    /* LEFT BOTTOM: Description */
+    .detail-description{
+      grid-column:1;grid-row:3;
+    }
+    .detail-description h2{
+      font-size:1.8rem;color:var(--accent1);font-family:var(--font-header);
+      margin-bottom:1rem;
+    }
+    .detail-description p{
+      color:var(--text-secondary);line-height:1.6;margin-bottom:1rem;
+    }
+    .btn{
+      padding:.85rem 1.6rem;border-radius:8px;text-decoration:none;
+      font-weight:600;font-family:var(--font-header);display:inline-block;
+      margin-top:.5rem;transition:all .25s;
+    }
+    .btn-primary{background:var(--accent1);color:#111418}
+    .btn-primary:hover{background:var(--accent2);color:#fff}
+    
+    /* RIGHT: Process */
+    .detail-process{
+      grid-column:2;grid-row:1 / 4;
+      padding:2rem;overflow-y:auto;max-height:calc(100vh - 120px);
+    }
+    .detail-process h3{
+      font-size:1.5rem;color:var(--accent1);font-family:var(--font-header);
+      margin-bottom:1.5rem;padding-bottom:.5rem;
+      border-bottom:2px solid var(--border);
+    }
+    .process-section{
+      margin-bottom:2rem;
+    }
+    .process-section h4{
+      font-size:1.2rem;color:var(--accent2);font-family:var(--font-header);
+      margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem;
+    }
+    .process-section h4:before{
+      content:"▸";color:var(--accent1);font-size:1.4rem;
+    }
+    .process-section p{
+      color:var(--text-secondary);line-height:1.6;margin-bottom:.8rem;
+    }
+    .process-section ul{
+      list-style:none;padding-left:1rem;margin-bottom:.8rem;
+    }
+    .process-section li{
+      color:var(--text-secondary);padding:.3rem 0;
+      padding-left:1.2rem;position:relative;line-height:1.5;
+    }
+    .process-section li:before{
+      content:"•";color:var(--accent1);position:absolute;left:0;
+      font-size:1.2rem;
+    }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .detail-grid{
+        grid-template-columns:1fr;grid-template-rows:auto;
+      }
+      .detail-slideshow,.detail-tools,.detail-description,.detail-process{
+        grid-column:1 !important;grid-row:auto !important;
+      }
+      .detail-slideshow{min-height:250px}
+      .detail-process{max-height:none}
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <a href="index.html#intro">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+  </header>
+
+  <div class="detail-container">
+    <div class="detail-grid">
+      <!-- LEFT TOP: Slideshow -->
+      <div class="detail-box detail-slideshow">
+        <img src="assets/nftcc.png" alt="NFTCC 1" class="active">
+        <img src="assets/nftccaa.png" alt="NFTCC 2">
+        <img src="assets/nftccaaa.png" alt="NFTCC 3">
+      </div>
+      
+      <!-- LEFT MIDDLE: Tools -->
+      <div class="detail-box detail-tools">
+        <h3>Tools Used</h3>
+        <div class="tool-tags">
+          <span class="tool-tag">Unity Engine</span>
+          <span class="tool-tag">C#</span>
+          <span class="tool-tag">Photoshop</span>
+          <span class="tool-tag">FL Studio</span>
+          <span class="tool-tag">Audacity</span>
+        </div>
+      </div>
+      
+      <!-- LEFT BOTTOM: Description -->
+      <div class="detail-box detail-description">
+        <h2>Nightmares of the Creepy Cube</h2>
+        <p>
+          Nightmares of the Creepy Cube is a 2D stealth-survival game developed in Unity, 
+          where you play as a creepy cube escaping through a nightmare world while avoiding
+          hostile robots. I handled all programming, visual effects, and music,
+          focusing on core gameplay, cosmetics, and early level design.
+        </p>
+        <a class="btn btn-primary" href="#" target="_blank">Download Game</a>
+      </div>
+      
+      <!-- RIGHT: Process -->
+      <div class="detail-box detail-process">
+        <h3>Development Journey</h3>
+        
+        <div class="process-section">
+          <h4>The Idea</h4>
+          <p>
+            It’s funny — most game programmers start out making a simple 2D platformer, but I never did.
+            Nightmares of the Creepy Cube was my first real attempt at one, and it quickly became much more ambitious than expected.
+            I got inspired after seeing Sqube Darkness on mobile — its eerie tone and sharp silhouettes caught my eye.
+            I wanted to recreate that dark, moody vibe but with deeper mechanics: enemies that react to movement, destructible terrain,
+            and a stealth system that rewards patience.
+          </p>
+        </div>
+        
+        <div class="process-section">
+          <h4>How I Planned It</h4>
+          <p>
+            My main goal was to make it a mobile-first platformer —
+            something I could publish on the Play Store with ads, rewarded videos, and future in-app cosmetic purchases.
+          </p>
+          <p>
+          I designed two planned modes:
+          </p>
+          <ul>
+            <li><strong>Endless Mode</strong>, where the terrain generates infinitely and survival time defines the score.</li>
+            <li><strong>Level Progression Mode</strong>, a handcrafted journey with 50 levels.</li>
+          </ul>
+          <p>
+          For the core loop, I decided on three pillars: procedural level generation,
+          AI-driven hazards, and dynamic terrain destruction. This meant all the gameplay systems 
+          — enemies, explosions, and obstacles — had to talk to the same ground system in real time.
+          </p>
+        </div>
+        
+        <div class="process-section">
+          <h4>How I Completed It</h4>
+          <p>
+            The foundation was the <strong>Ground Generator</strong> built using Unity’s Tilemap API.
+            It procedurally creates terrain chunks ahead of the player, adjusting step height, adding bumps,
+            and occasionally spawning spikes or termites. It’s tuned for randomness but with built-in constraints so the player never encounters an impossible jump.
+          </p>
+          <p>
+          The enemy AI system added life (and chaos) to the world:
+          </p>
+          <ul>
+            <li>Termites detect motion, chase, and self-destruct after locking onto the player — their explosions dynamically carve holes in the tilemap via the <strong>MakeHole</strong> method.</li>
+            <li>Drones sweep across the map with a real-time vision cone mesh, built from procedural raycasts. If they spot a moving player, they fire homing missiles that track and explode, also altering the terrain.</li>
+          </ul>
+          <p>
+          All sounds and music were made from scratch — I wanted complete control over the game’s tone. Even the cosmetics (the player’s “eye” designs) were drawn by me.
+          </P>
+          <p>
+          At this stage, the game runs fully with PC controls, infinite procedural generation, all enemy types functional, and dynamic destruction integrated into gameplay.
+          </P>
+        </div>
+        
+        <div class="process-section">
+          <h4>What Needs Work</h4>
+          <p>
+            There’s still a lot to build — the level mode with handcrafted challenges, 
+            ads and reward systems, and achievement-based cosmetic unlocks are in progress.
+            The onboarding also needs improvement;
+            players don’t immediately understand that hiding in shadows and staying still prevents drone detection.
+          </p>
+          <p>
+          Future updates will add more enemy types, better rewards, and mobile touch controls.
+          Once polished, Nightmares of the Creepy Cube will be my first Play Store release — a dark, reactive world built entirely from procedural code.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Slideshow functionality
+    const slideshow = document.querySelector('.detail-slideshow');
+    const images = Array.from(slideshow.querySelectorAll('img'));
+    let currentIndex = 0;
+
+    function rotateImages(){
+      images[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % images.length;
+      images[currentIndex].classList.add('active');
+    }
+
+    // Auto-rotate every 4 seconds
+    setInterval(rotateImages, 4000);
+  </script>
+</body>
+</html>

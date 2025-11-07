@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About Me | Rahul Jetwani</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#111418;
+      --surface:#1D1F23;
+      --text-primary:#E6E6E6;
+      --text-secondary:#A9A9B3;
+      --accent1:#F9A826;
+      --accent2:#679186;
+      --border:#2A2E35;
+      --font-header:"Space Grotesk",sans-serif;
+      --font-body:"Inter",sans-serif;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;width:100%;background:var(--bg);color:var(--text-primary);font-family:var(--font-body)}
+
+    header{
+      position:fixed;top:0;left:0;width:100%;
+      background:rgba(29,31,35,0.85);backdrop-filter:blur(10px);
+      display:flex;justify-content:space-around;align-items:center;
+      padding:18px 0;z-index:1000;border-bottom:1px solid var(--border);
+    }
+    header a{
+      color:var(--text-primary);text-decoration:none;
+      font-family:var(--font-header);font-weight:600;font-size:17px;
+      transition:color .18s;
+    }
+    header a:hover{color:var(--accent1)}
+
+    main{
+      margin-top:100px;min-height:calc(100vh - 100px);
+      display:flex;flex-direction:column;align-items:center;
+      padding:2rem;text-align:center;
+    }
+
+    .profile-pic{
+      width:200px;height:200px;border-radius:50%;
+      overflow:hidden;border:4px solid var(--accent1);
+      margin-bottom:1rem;
+      box-shadow:0 0 40px rgba(249,168,38,0.4);
+    }
+    .profile-pic img{width:100%;height:100%;object-fit:cover}
+
+    h1{
+      font-family:var(--font-header);
+      font-size:1.9rem;
+      color:var(--accent1);
+      margin-bottom:.4rem;
+    }
+    .about-text{
+      max-width:680px;
+      color:var(--text-secondary);
+      line-height:1.6;
+      margin-bottom:1.8rem;
+      font-size:.95rem;
+    }
+
+    /* Skills section */
+    .skills{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:1.5rem 2rem;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:1rem 1.5rem;
+      width:100%;
+      max-width:800px;
+    }
+
+    .skill{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      background:rgba(255,255,255,0.02);
+      border-radius:8px;
+      padding:.8rem 0.5rem;
+      transition:transform .2s, background .2s;
+    }
+    .skill:hover{
+      transform:translateY(-3px);
+      background:rgba(255,255,255,0.05);
+    }
+
+    .skill-name{
+      font-size:.9rem;
+      color:var(--text-primary);
+      margin-bottom:0.3rem;
+      font-family:var(--font-header);
+    }
+
+    .stars{
+      color:var(--accent1);
+      font-size:0.9rem;
+      letter-spacing:1px;
+      animation:glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow{
+      from{text-shadow:0 0 3px rgba(249,168,38,0.5);}
+      to{text-shadow:0 0 8px rgba(249,168,38,0.8);}
+    }
+
+    .email{
+      margin-top:2rem;
+      color:var(--accent1);
+      font-family:var(--font-header);
+      font-size:1rem;
+    }
+
+    @media(max-width:600px){
+      h1{font-size:1.5rem}
+      .skills{padding:1.2rem}
+      .skill-name{font-size:.85rem}
+      .stars{font-size:.8rem}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html#intro">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="about.html">About</a>
+  </header>
+
+  <main>
+    <div class="profile-pic">
+      <img src="assets/new5.jpg" alt="Rahul Jetwani">
+    </div>
+    <h1>Rahul Jetwani</h1>
+    <p class="about-text">
+      I’m Rahul — a Unity Game Developer from Indore, India. I focus on gameplay systems, AI programming, and technical problem-solving.
+      I love pushing prototypes fast, optimizing performance, and exploring new creative directions in interactive storytelling and game design.
+    </p>
+
+    <div class="skills">
+      <div class="skill"><div class="skill-name">Unity Engine</div><div class="stars">★★★★★</div></div>
+      <div class="skill"><div class="skill-name">C# Programming</div><div class="stars">★★★★☆</div></div>
+      <div class="skill"><div class="skill-name">AI Programming</div><div class="stars">★★★★☆</div></div>
+      <div class="skill"><div class="skill-name">Optimization</div><div class="stars">★★★☆☆</div></div>
+
+      <div class="skill"><div class="skill-name">Photoshop</div><div class="stars">★★★★★</div></div>
+      <div class="skill"><div class="skill-name">Blender</div><div class="stars">★★★☆☆</div></div>
+      <div class="skill"><div class="skill-name">Unreal Engine</div><div class="stars">★★★★☆</div></div>
+      <div class="skill"><div class="skill-name">C++</div><div class="stars">★★★★☆</div></div>
+
+      <div class="skill"><div class="skill-name">Communication</div><div class="stars">★★★★☆</div></div>
+      <div class="skill"><div class="skill-name">UI / UX Design</div><div class="stars">★★★☆☆</div></div>
+      <div class="skill"><div class="skill-name">Team Collaboration</div><div class="stars">★★★★☆</div></div>
+      <div class="skill"><div class="skill-name">Problem Solving</div><div class="stars">★★★★☆</div></div>
+    </div>
+
+    <div class="email">📧 rahuljetwani@email.com</div>
+  </main>
+</body>
+</html>
