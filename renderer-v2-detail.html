@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OpenGL Renderer V2 | Rahul Jetwani</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#111418;
+      --surface:#1D1F23;
+      --text-primary:#E6E6E6;
+      --text-secondary:#A9A9B3;
+      --accent1:#F9A826;
+      --accent2:#679186;
+      --border:#2A2E35;
+      --font-header: "Space Grotesk", sans-serif;
+      --font-body: "Inter", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;width:100%;background:var(--bg);color:var(--text-primary);font-family:var(--font-body)}
+
+    header{
+      position:fixed;top:0;left:0;width:100%;
+      background:rgba(29,31,35,0.85);backdrop-filter:blur(10px);
+      display:flex;justify-content:space-around;align-items:center;
+      padding:18px 0;z-index:1000;border-bottom:1px solid var(--border);
+    }
+    header a{
+      color:var(--text-primary);text-decoration:none;font-family:var(--font-header);
+      font-weight:600;font-size:17px;letter-spacing:0.2px;transition:color .18s;
+    }
+    header a:hover{color:var(--accent1)}
+
+    .detail-container{
+      padding-top:90px;
+      min-height:100vh;
+      padding-bottom:2rem;
+    }
+
+    .detail-grid{
+      max-width:1600px;margin:0 auto;padding:2rem;
+      display:grid;grid-template-columns:40% 60%;grid-template-rows:auto auto auto;gap:1.5rem;
+      min-height:calc(100vh - 80px);
+    }
+
+    .detail-box{
+      background:var(--surface);border-radius:12px;padding:1.5rem;
+      border:1px solid var(--border);
+    }
+
+    /* LEFT TOP: Slideshow */
+    .detail-slideshow{
+      grid-column:1;grid-row:1;
+      position:relative;overflow:hidden;padding:0;
+      display:flex;align-items:center;justify-content:center;
+      min-height:350px;
+    }
+    .detail-slideshow img{
+      position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+      opacity:0;transition:opacity .6s ease;
+    }
+    .detail-slideshow img.active{opacity:1}
+    .slideshow-dots{
+      position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+      display:flex;gap:6px;z-index:2;
+    }
+    .slideshow-dots span{
+      width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.35);
+      transition:background .25s;
+    }
+    .slideshow-dots span.active{background:var(--accent1)}
+
+    .status-badge{
+      position:absolute;top:12px;left:12px;z-index:2;
+      padding:.4rem .9rem;background:rgba(17,20,24,0.85);
+      border:1px solid rgba(249,168,38,0.4);border-radius:6px;
+      color:var(--accent1);font-family:var(--font-mono);font-size:.78rem;
+      letter-spacing:.3px;
+    }
+
+    /* LEFT MIDDLE: Tools */
+    .detail-tools{
+      grid-column:1;grid-row:2;
+    }
+    .detail-tools h3{
+      font-size:1.2rem;color:var(--accent2);font-family:var(--font-header);
+      margin-bottom:.8rem;
+    }
+    .tool-tags{
+      display:flex;flex-wrap:wrap;gap:.6rem;
+    }
+    .tool-tag{
+      padding:.5rem 1rem;background:rgba(249,168,38,0.15);
+      color:var(--accent1);border-radius:6px;font-size:.9rem;
+      font-family:var(--font-mono);border:1px solid rgba(249,168,38,0.3);
+    }
+
+    /* LEFT BOTTOM: Description */
+    .detail-description{
+      grid-column:1;grid-row:3;
+    }
+    .detail-description h2{
+      font-size:1.8rem;color:var(--accent1);font-family:var(--font-header);
+      margin-bottom:1rem;
+    }
+    .detail-description p{
+      color:var(--text-secondary);line-height:1.6;margin-bottom:1rem;
+    }
+    .btn{
+      padding:.85rem 1.6rem;border-radius:8px;text-decoration:none;
+      font-weight:600;font-family:var(--font-header);display:inline-block;
+      margin-top:.5rem;transition:all .25s;
+      margin-right:.8rem;
+    }
+    .btn-primary{background:var(--accent1);color:#111418}
+    .btn-primary:hover{background:var(--accent2);color:#fff}
+    .btn-outline{border:2px solid var(--accent1);color:var(--accent1);background:transparent}
+    .btn-outline:hover{border-color:var(--accent2);color:var(--accent2)}
+
+    /* RIGHT: Process */
+    .detail-process{
+      grid-column:2;grid-row:1 / 4;
+      padding:2rem;overflow-y:auto;max-height:calc(100vh - 120px);
+    }
+    .detail-process h3{
+      font-size:1.5rem;color:var(--accent1);font-family:var(--font-header);
+      margin-bottom:1.5rem;padding-bottom:.5rem;
+      border-bottom:2px solid var(--border);
+    }
+    .process-section{
+      margin-bottom:2rem;
+    }
+    .process-section h4{
+      font-size:1.2rem;color:var(--accent2);font-family:var(--font-header);
+      margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem;
+    }
+    .process-section h4:before{
+      content:"▸";color:var(--accent1);font-size:1.4rem;
+    }
+    .process-section p{
+      color:var(--text-secondary);line-height:1.7;margin-bottom:1rem;
+    }
+    .process-section ul{
+      list-style:none;padding-left:1rem;margin-bottom:.8rem;
+    }
+    .process-section li{
+      color:var(--text-secondary);padding:.3rem 0;
+      padding-left:1.2rem;position:relative;line-height:1.5;
+    }
+    .process-section li:before{
+      content:"•";color:var(--accent1);position:absolute;left:0;
+      font-size:1.2rem;
+    }
+    .process-section li.done:before{
+      content:"✓";color:var(--accent2);
+    }
+
+    /* Responsive */
+    @media (max-width:900px){
+      .detail-grid{
+        grid-template-columns:1fr;grid-template-rows:auto;
+      }
+      .detail-slideshow,.detail-tools,.detail-description,.detail-process{
+        grid-column:1 !important;grid-row:auto !important;
+      }
+      .detail-slideshow{min-height:250px}
+      .detail-process{max-height:none}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html#home">Home</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#about">About</a>
+  </header>
+
+  <div class="detail-container">
+    <div class="detail-grid">
+
+      <!-- LEFT TOP: Slideshow -->
+      <div class="detail-box detail-slideshow">
+        <div class="status-badge">🚧 Work in progress</div>
+        <img src="assets/OpenGL Digital Twin 26-10-2026 14_31_56.png" alt="OpenGL Renderer V2 - Digital Twin scene 1" class="active">
+        <img src="assets/OpenGL Digital Twin 26-10-2026 14_32_47.png" alt="OpenGL Renderer V2 - Digital Twin scene 2">
+        <img src="assets/OpenGL Digital Twin 26-10-2026 14_34_17.png" alt="OpenGL Renderer V2 - Digital Twin scene 3">
+        <div class="slideshow-dots">
+          <span class="active"></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <!-- LEFT MIDDLE: Tools -->
+      <div class="detail-box detail-tools">
+        <h3>Tools Used</h3>
+        <div class="tool-tags">
+          <span class="tool-tag">C++</span>
+          <span class="tool-tag">OpenGL 3.3+</span>
+          <span class="tool-tag">GLFW</span>
+          <span class="tool-tag">GLAD</span>
+          <span class="tool-tag">GLM</span>
+          <span class="tool-tag">stb_image</span>
+          <span class="tool-tag">Assimp</span>
+          <span class="tool-tag">Dear ImGui</span>
+          <span class="tool-tag">nlohmann/json</span>
+        </div>
+      </div>
+
+      <!-- LEFT BOTTOM: Description -->
+      <div class="detail-box detail-description">
+        <h2>OpenGL Renderer V2</h2>
+        <p>
+          The follow-up to my first renderer. V1 was about understanding the basics — textures,
+          lighting, model loading. V2 pushes further into physically based rendering and uses the
+          renderer as the visual half of a digital-twin experiment: a jointed robot arm driven by
+          joint transforms, with the groundwork laid for mirroring a simulated machine in real time.
+        </p>
+        <a class="btn btn-primary" href="https://github.com/rahuljetwani/OPENGL-RENDERER-V2" target="_blank">View on GitHub</a>
+        <a class="btn btn-outline" href="renderer-detail.html">← See V1</a>
+      </div>
+
+      <!-- RIGHT: Process -->
+      <div class="detail-box detail-process">
+        <h3>Development Journey</h3>
+
+        <div class="process-section">
+          <h4>Why a V2</h4>
+          <p>
+            <a href="renderer-detail.html" style="color:var(--accent1);">OpenGL Renderer V1</a> got the
+            fundamentals right — the pipeline, a custom model loader, basic Phong-style lighting — but
+            it was intentionally simple. V2 is a separate repo and a deliberate step up: real material
+            response to light, an articulated object in the scene instead of static meshes, and the
+            beginnings of using the renderer for something beyond pretty pictures — simulating and
+            visualizing a physical system.
+          </p>
+        </div>
+
+        <div class="process-section">
+          <h4>Physically Based Rendering</h4>
+          <p>
+            Materials now use a metallic/roughness PBR workflow instead of V1's simple Phong lighting,
+            so surfaces respond to light in a far more physically plausible way. Image-based lighting
+            groundwork is in — irradiance, pre-filtered environment maps, and a BRDF LUT pass — feeding
+            into an HDR pipeline that loads real HDR skies (with a JPG skybox fallback) rather than flat
+            ambient light.
+          </p>
+        </div>
+
+        <div class="process-section">
+          <h4>Robotic Arm & Digital Twin</h4>
+          <p>
+            The centerpiece of V2 is a jointed robot arm, complete with its own forward-kinematics
+            module and self-test tooling. The arm's pose is driven by joint transforms, and a
+            <strong>TipWorld()</strong> query exposes the end-effector's world position — the hook that
+            turns this from "a 3D model on screen" into "a renderer that can mirror the state of a
+            simulated machine." That's the digital-twin angle: the virtual arm as the visual readout for
+            a simulated or real system.
+          </p>
+          <ul>
+            <li>Jointed robot arm with forward kinematics (sim/RobotKinematics)</li>
+            <li>Dedicated RobotArm class separate from general scene geometry</li>
+            <li>Self-test tooling to validate the kinematics in isolation</li>
+          </ul>
+        </div>
+
+        <div class="process-section">
+          <h4>Scene & Pipeline Upgrades</h4>
+          <p>
+            Model loading moved from V1's hand-rolled JSON loader to Assimp, trading a learning exercise
+            for a far more capable, production-style pipeline. Shadow mapping, an HDR post-processing
+            pipeline, and a primitives library (box, plane, sphere, cylinder) let scenes be built out of
+            code rather than only imported assets — the current scene uses it for a ground plane,
+            conveyors, crates and safety lines around the robot arm. A single ImGui controls panel ties
+            the scene's toggles together.
+          </p>
+        </div>
+
+        <div class="process-section">
+          <h4>Roadmap</h4>
+          <p>
+            This is active, unfinished work — some parts are rough by design while the architecture
+            settles. What's next:
+          </p>
+          <ul>
+            <li>Finish the image-based lighting pipeline and add shadows to it</li>
+            <li>Inverse kinematics for the robot arm</li>
+            <li>Feed live or simulated data into the arm to complete the digital-twin loop</li>
+            <li>Basic physics and collision simulation</li>
+            <li>Cleaner scene and code structure</li>
+          </ul>
+        </div>
+
+        <div class="process-section">
+          <h4>Version History</h4>
+          <ul>
+            <li class="done"><a href="renderer-detail.html" style="color:var(--text-secondary);">V1</a> — textures, lighting, custom model loading</li>
+            <li><strong>V2 (this project)</strong> — PBR, robot arm, early digital-twin and simulation work</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const slideshow = document.querySelector('.detail-slideshow');
+    const images = Array.from(slideshow.querySelectorAll('img'));
+    const dots = Array.from(slideshow.querySelectorAll('.slideshow-dots span'));
+    let currentIndex = 0;
+
+    function rotateImages(){
+      images[currentIndex].classList.remove('active');
+      dots[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % images.length;
+      images[currentIndex].classList.add('active');
+      dots[currentIndex].classList.add('active');
+    }
+
+    setInterval(rotateImages, 4000);
+  </script>
+</body>
+</html>
